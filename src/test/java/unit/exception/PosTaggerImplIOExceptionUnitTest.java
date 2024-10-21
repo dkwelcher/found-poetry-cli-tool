@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class PosTaggerIOExceptionUnitTest {
+public class PosTaggerImplIOExceptionUnitTest {
     @Test
     void testErrorMessage() {
         String filePath = "example/model/posmodel.bin";
