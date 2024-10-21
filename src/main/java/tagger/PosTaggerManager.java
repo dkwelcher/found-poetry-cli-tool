@@ -1,4 +1,4 @@
-package tagger.impl;
+package tagger;
 
 import tagger.PosTagger;
 
