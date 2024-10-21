@@ -1,7 +1,5 @@
 package tagger;
 
-import tagger.PosTagger;
-
 public class PosTaggerManager {
     private final PosTagger posTagger;
     private final String errorMessage;

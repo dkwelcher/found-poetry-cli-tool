@@ -1,12 +1,10 @@
 package application;
 
 import exception.TextExtractorIOException;
-import extractor.TextExtractor;
 import extractor.TextExtractorManager;
 import extractor.impl.DocTextExtractor;
 import extractor.impl.DocxTextExtractor;
 import library.DocumentLibrary;
-import org.apache.poi.ss.formula.functions.T;
 import tagger.PosTagger;
 import tagger.impl.PosTaggerImpl;
 import exception.IncorrectFileFormatException;
@@ -14,7 +12,6 @@ import exception.NonExistentFileException;
 import exception.PosTaggerIOException;
 import tagger.PosTaggerManager;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Application {

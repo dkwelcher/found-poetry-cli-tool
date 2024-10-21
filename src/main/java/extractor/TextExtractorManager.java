@@ -1,7 +1,5 @@
 package extractor;
 
-import org.w3c.dom.Text;
-
 public class TextExtractorManager {
     private final TextExtractor textExtractor;
     private final String errorMessage;
