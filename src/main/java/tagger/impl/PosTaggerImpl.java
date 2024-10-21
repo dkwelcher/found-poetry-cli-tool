@@ -1,4 +1,4 @@
-package tagger;
+package tagger.impl;
 
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
@@ -6,6 +6,7 @@ import exception.NullOrEmptyFilePathException;
 import exception.PosTaggerIOException;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
+import tagger.PosTagger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,16 +14,15 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class PosTagger implements IPosTagger {
-    private static PosTagger instance;
+public class PosTaggerImpl implements PosTagger {
     private POSTaggerME tagger;
 
-    private PosTagger(String filePath) throws NullOrEmptyFilePathException, IncorrectFileFormatException, NonExistentFileException, PosTaggerIOException {
+    public PosTaggerImpl(String filePath) throws NullOrEmptyFilePathException, IncorrectFileFormatException, NonExistentFileException, PosTaggerIOException {
         validateFilePath(filePath);
         initializeTagger(filePath);
     }
 
-    private static void validateFilePath(String filePath) throws NullOrEmptyFilePathException, IncorrectFileFormatException, NonExistentFileException {
+    private void validateFilePath(String filePath) throws NullOrEmptyFilePathException, IncorrectFileFormatException, NonExistentFileException {
         if (filePath == null || filePath.trim().isEmpty()) {
             throw new NullOrEmptyFilePathException((filePath));
         }
@@ -45,13 +45,6 @@ public class PosTagger implements IPosTagger {
             throw new PosTaggerIOException(filePath, e);
         }
         this.tagger = new POSTaggerME(model);
-    }
-
-    public static synchronized PosTagger getInstance(String filePath) throws NullOrEmptyFilePathException, IncorrectFileFormatException, NonExistentFileException, PosTaggerIOException {
-        if (instance == null) {
-            instance = new PosTagger(filePath);
-        }
-        return instance;
     }
 
     public String[] getTags(String[] tokens) {
