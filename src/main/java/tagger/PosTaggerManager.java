@@ -1,6 +1,6 @@
-package service;
+package tagger.impl;
 
-import domain.PosTagger;
+import tagger.PosTagger;
 
 public class PosTaggerManager {
     private final PosTagger posTagger;

@@ -1,4 +1,4 @@
-package domain;
+package tagger;
 
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class PosTagger {
+public class PosTagger implements IPosTagger {
     private static PosTagger instance;
     private POSTaggerME tagger;
 
