@@ -1,10 +1,9 @@
-package unit.domain;
+package unit.tagger;
 
 import tagger.impl.PosTaggerImpl;
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
 import exception.NullOrEmptyFilePathException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
