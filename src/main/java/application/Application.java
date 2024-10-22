@@ -5,6 +5,10 @@ import extractor.TextExtractorManager;
 import extractor.impl.DocTextExtractor;
 import extractor.impl.DocxTextExtractor;
 import library.DocumentLibrary;
+import library.impl.DocumentLibraryImpl;
+import randomizer.SentenceRandomizer;
+import randomizer.impl.CombinationWriterImpl;
+import randomizer.impl.SentenceRandomizerImpl;
 import tagger.PosTagger;
 import tagger.impl.PosTaggerImpl;
 import exception.IncorrectFileFormatException;
@@ -12,28 +16,33 @@ import exception.NonExistentFileException;
 import exception.PosTaggerIOException;
 import tagger.PosTaggerManager;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
     private static final String MODEL_FILE_PATH = "..\\found-poetry-cli-tool\\src\\main\\resources\\en-pos-maxent.bin";
+    private static final String DEFAULT_OUTPUT_FILE_PATH = "associations.txt";
     private static final String USER_SUBMIT_DOCUMENT_COMMAND = "1";
-    private static final String USER_RANDOMIZE_BY_SENTENCE_COMMAND = "2";
-    private static final String USER_RANDOMIZE_BY_PATTERN_COMMAND = "3";
-    private static final String USER_EXIT_COMMAND = "4";
+    private static final String USER_SPECIFY_OUTPUT_FILE_PATH = "2";
+    private static final String USER_RANDOMIZE_BY_SENTENCE_COMMAND = "3";
+    private static final String USER_RANDOMIZE_BY_PATTERN_COMMAND = "4";
+    private static final String USER_EXIT_COMMAND = "5";
 
     public static void run() {
         PosTaggerManager posTaggerManager = getPosTaggerManager();
 
         if (!posTaggerManager.isSuccess()) {
-            System.out.println(posTaggerManager.getErrorMessage());
+            System.out.println(posTaggerManager.errorMessage());
             return;
         }
 
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
-        DocumentLibrary documentLibrary = new DocumentLibrary();
+        DocumentLibrary documentLibrary = new DocumentLibraryImpl();
 
         displayWelcomeMessage();
+
+        String outputFilePath = DEFAULT_OUTPUT_FILE_PATH;
 
         while (!userInput.equalsIgnoreCase(USER_EXIT_COMMAND)) {
             displayMenu();
@@ -45,8 +54,23 @@ public class Application {
                 System.out.println(handleUserDocumentSubmission(userInput, documentLibrary));
             }
 
+            if (userInput.equals(USER_SPECIFY_OUTPUT_FILE_PATH)) {
+                displayOutputFilePathPrompt();
+                userInput = scanner.nextLine().trim();
+                outputFilePath = userInput;
+            }
+
             if (userInput.equals(USER_RANDOMIZE_BY_SENTENCE_COMMAND)) {
-                System.out.println("Not implemented");
+                SentenceRandomizer sentenceRandomizer = new SentenceRandomizerImpl(documentLibrary);
+                List<String> combinations = sentenceRandomizer.generateCombinations();
+                CombinationWriterImpl combinationWriter = new CombinationWriterImpl(combinations);
+                if (combinationWriter.writeCombinationsToFile(outputFilePath)) {
+                    System.out.println(outputFilePath);
+                    System.out.println("Successful combinations");
+                } else {
+                    System.out.println("Unsuccessful combinations!!!");
+                }
+
             }
 
             if (userInput.equals(USER_RANDOMIZE_BY_PATTERN_COMMAND)) {
@@ -82,7 +106,7 @@ public class Application {
 
     private static void displayMenu() {
         final String divider = "*".repeat(40);
-        final String menu = "\nMENU\n1 - Submit documents (.docx or .doc)\n2 - Randomize by sentence\n3 - Randomize by pattern\n4 - Exit\n";
+        final String menu = "\nMENU\n1 - Submit documents (.docx or .doc)\n2 - Specify file path for output\n3 - Randomize by sentence\n4 - Randomize by pattern\n5 - Exit\n";
         System.out.println(divider + menu + divider);
     }
 
@@ -92,14 +116,26 @@ public class Application {
     }
 
     private static String handleUserDocumentSubmission(String userInput, DocumentLibrary documentLibrary) {
+        final int maximumDocumentsAllowed = 3;
         final String successMessage = "Document successfully extracted.";
+        final String documentLibraryFullMessage = "Maximum documents added. Max allowed: " + maximumDocumentsAllowed + ".";
+        final String unsuccessfulMessage = "Unable to add document.";
+
+        if (documentLibrary.getCount() >= maximumDocumentsAllowed) {
+            return documentLibraryFullMessage;
+        }
+
         TextExtractorManager textExtractorManager = getTextExtractorManager(userInput);
 
         if (!textExtractorManager.isSuccess()) {
-            return textExtractorManager.getErrorMessage();
+            return textExtractorManager.errorMessage();
         }
 
-        documentLibrary.addText(textExtractorManager.getTextExtractor().getDocumentAsString());
+        boolean isSuccess = documentLibrary.addText(textExtractorManager.textExtractor().getDocumentAsString());
+        if (!isSuccess) {
+            return unsuccessfulMessage;
+        }
+
         return successMessage;
     }
 
@@ -134,5 +170,10 @@ public class Application {
         } catch (TextExtractorIOException e) {
             return new TextExtractorManager(null, textExtractorIOExceptionMessage);
         }
+    }
+
+    private static void displayOutputFilePathPrompt() {
+        final String outputPrompt = "Specify the file path: ";
+        System.out.println(outputPrompt);
     }
 }
