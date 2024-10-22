@@ -1,11 +1,13 @@
 package randomizer.impl;
 
+import randomizer.CombinationWriter;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class CombinationWriterImpl {
+public class CombinationWriterImpl implements CombinationWriter {
     private final List<String> combinations;
 
     public CombinationWriterImpl(final List<String> combinations) {
