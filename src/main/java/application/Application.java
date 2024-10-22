@@ -6,6 +6,7 @@ import extractor.impl.DocTextExtractor;
 import extractor.impl.DocxTextExtractor;
 import library.DocumentLibrary;
 import library.impl.DocumentLibraryImpl;
+import randomizer.CombinationWriter;
 import randomizer.SentenceRandomizer;
 import randomizer.impl.CombinationWriterImpl;
 import randomizer.impl.SentenceRandomizerImpl;
@@ -23,7 +24,7 @@ public class Application {
     private static final String MODEL_FILE_PATH = "..\\found-poetry-cli-tool\\src\\main\\resources\\en-pos-maxent.bin";
     private static final String DEFAULT_OUTPUT_FILE_PATH = "associations.txt";
     private static final String USER_SUBMIT_DOCUMENT_COMMAND = "1";
-    private static final String USER_SPECIFY_OUTPUT_FILE_PATH = "2";
+    private static final String USER_SPECIFY_OUTPUT_FILE_PATH_COMMAND = "2";
     private static final String USER_RANDOMIZE_BY_SENTENCE_COMMAND = "3";
     private static final String USER_RANDOMIZE_BY_PATTERN_COMMAND = "4";
     private static final String USER_EXIT_COMMAND = "5";
@@ -49,28 +50,32 @@ public class Application {
             userInput = scanner.nextLine().trim();
 
             if (userInput.equals(USER_SUBMIT_DOCUMENT_COMMAND)) {
-                displayDocumentPrompt();
+                System.out.println(getUserSubmitDocumentCommandPrompt());
                 userInput = scanner.nextLine().trim();
-                System.out.println(handleUserDocumentSubmission(userInput, documentLibrary));
+                System.out.println(handleUserSubmitDocumentCommand(userInput, documentLibrary));
             }
 
-            if (userInput.equals(USER_SPECIFY_OUTPUT_FILE_PATH)) {
-                displayOutputFilePathPrompt();
+            if (userInput.equals(USER_SPECIFY_OUTPUT_FILE_PATH_COMMAND)) {
+                System.out.println(getUserSpecifyOutputFilePathCommandPrompt());
                 userInput = scanner.nextLine().trim();
-                outputFilePath = userInput;
+
+                if (validateUserSpecifyOutputFilePathCommand(userInput)) {
+                    outputFilePath = userInput;
+                    System.out.println(getUserSpecifyOutputFilePathCommandResult(outputFilePath));
+                } else {
+                    System.out.println(getUserSpecifyOutputFilePathCommandErrorMessage());
+                }
             }
 
             if (userInput.equals(USER_RANDOMIZE_BY_SENTENCE_COMMAND)) {
-                SentenceRandomizer sentenceRandomizer = new SentenceRandomizerImpl(documentLibrary);
-                List<String> combinations = sentenceRandomizer.generateCombinations();
-                CombinationWriterImpl combinationWriter = new CombinationWriterImpl(combinations);
-                if (combinationWriter.writeCombinationsToFile(outputFilePath)) {
-                    System.out.println(outputFilePath);
-                    System.out.println("Successful combinations");
-                } else {
-                    System.out.println("Unsuccessful combinations!!!");
-                }
-
+                System.out.println(
+                        getUserRandomizeBySentenceCommandResult(
+                                handleUserRandomizeBySentenceCommand(
+                                        documentLibrary,
+                                        outputFilePath
+                                )
+                        )
+                );
             }
 
             if (userInput.equals(USER_RANDOMIZE_BY_PATTERN_COMMAND)) {
@@ -110,12 +115,11 @@ public class Application {
         System.out.println(divider + menu + divider);
     }
 
-    private static void displayDocumentPrompt() {
-        final String documentPrompt = "Specify the file path: ";
-        System.out.println(documentPrompt);
+    private static String getUserSubmitDocumentCommandPrompt() {
+        return "Specify the file path: ";
     }
 
-    private static String handleUserDocumentSubmission(String userInput, DocumentLibrary documentLibrary) {
+    private static String handleUserSubmitDocumentCommand(String userInput, DocumentLibrary documentLibrary) {
         final int maximumDocumentsAllowed = 3;
         final String successMessage = "Document successfully extracted.";
         final String documentLibraryFullMessage = "Maximum documents added. Max allowed: " + maximumDocumentsAllowed + ".";
@@ -172,8 +176,33 @@ public class Application {
         }
     }
 
-    private static void displayOutputFilePathPrompt() {
-        final String outputPrompt = "Specify the file path: ";
-        System.out.println(outputPrompt);
+    private static String getUserSpecifyOutputFilePathCommandPrompt() {
+        return "Specify the file path: ";
+    }
+
+    private static String getUserSpecifyOutputFilePathCommandErrorMessage() {
+        return "File path invalid. File format must be .txt";
+    }
+
+    private static boolean validateUserSpecifyOutputFilePathCommand(String userInput) {
+        return userInput.endsWith(".txt");
+    }
+
+    private static String getUserSpecifyOutputFilePathCommandResult(String userFilePathInput) {
+        final String resultsLocationMessage = "Randomization results will be written to this location: ";
+        return resultsLocationMessage + userFilePathInput;
+    }
+
+    private static boolean handleUserRandomizeBySentenceCommand(DocumentLibrary documentLibrary, String outputFilePath) {
+        SentenceRandomizer sentenceRandomizer = new SentenceRandomizerImpl(documentLibrary);
+        List<String> combinations = sentenceRandomizer.generateCombinations();
+        CombinationWriter combinationWriter = new CombinationWriterImpl(combinations);
+        return combinationWriter.writeCombinationsToFile(outputFilePath);
+    }
+
+    private static String getUserRandomizeBySentenceCommandResult(boolean isSuccess) {
+        final String successMessage = "Sentence randomization successful.";
+        final String errorMessage = "Sentence randomization unsuccessful. Please check specified file path for output.";
+        return isSuccess ? successMessage : errorMessage;
     }
 }
