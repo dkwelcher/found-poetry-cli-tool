@@ -1,7 +1,6 @@
 package randomizer.impl;
 
 import exception.CombinationWriterIOException;
-import exception.NullOrEmptyFilePathException;
 import randomizer.CombinationWriter;
 
 import java.io.BufferedWriter;
