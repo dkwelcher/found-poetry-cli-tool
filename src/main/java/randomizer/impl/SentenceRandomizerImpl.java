@@ -6,9 +6,13 @@ import randomizer.SentenceRandomizer;
 import java.util.*;
 
 public class SentenceRandomizerImpl implements SentenceRandomizer {
-    private final List<String[]> listOfSentenceArrays;
+    private List<String[]> listOfSentenceArrays;
 
-    public SentenceRandomizerImpl(DocumentLibrary documentLibrary) {
+    public SentenceRandomizerImpl() {
+        this.listOfSentenceArrays = new ArrayList<>();
+    }
+
+    public void setListOfSentenceArrays(DocumentLibrary documentLibrary) {
         this.listOfSentenceArrays = documentLibrary.getListOfDocumentsAsStrings();
     }
 
