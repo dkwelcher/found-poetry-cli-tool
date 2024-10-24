@@ -13,7 +13,7 @@ public class SentenceRandomizerImpl implements SentenceRandomizer {
     }
 
     public void setListOfSentenceArrays(DocumentLibrary documentLibrary) {
-        this.listOfSentenceArrays = documentLibrary.getListOfDocumentsAsStrings();
+        this.listOfSentenceArrays = documentLibrary.getListOfDocumentsAsSentences();
     }
 
     public List<String> generateCombinations() {
