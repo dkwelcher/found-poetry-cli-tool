@@ -8,12 +8,12 @@ import library.DocumentLibrary;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import randomizer.DocxCombinationWriter;
 import randomizer.DocxDocumentCreator;
+import randomizer.PatternRandomizer;
 import randomizer.SentenceRandomizer;
 import tagger.PosTagger;
 import utility.Message;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Application {
     private static final String USER_SUBMIT_DOCUMENT_COMMAND = "1";
@@ -24,18 +24,21 @@ public class Application {
     private final PosTagger posTagger;
     private final DocumentLibrary documentLibrary;
     private final SentenceRandomizer sentenceRandomizer;
+    private final PatternRandomizer patternRandomizer;
     private final DocxDocumentCreator documentCreator;
     private final DocxCombinationWriter combinationWriter;
 
     public Application(PosTagger posTagger,
                        DocumentLibrary documentLibrary,
                        SentenceRandomizer sentenceRandomizer,
+                       PatternRandomizer patternRandomizer,
                        DocxDocumentCreator documentCreator,
                        DocxCombinationWriter combinationWriter) {
 
         this.posTagger = posTagger;
         this.documentLibrary = documentLibrary;
         this.sentenceRandomizer = sentenceRandomizer;
+        this.patternRandomizer = patternRandomizer;
         this.documentCreator = documentCreator;
         this.combinationWriter = combinationWriter;
     }
@@ -67,7 +70,9 @@ public class Application {
             }
 
             if (userInput.equals(USER_RANDOMIZE_BY_PATTERN_COMMAND)) {
-                executeUserRandomizeByPatternCommand();
+                display(Message.getUserRandomizeByPatternCommandMenu());
+                userInput = scanner.nextLine().trim();
+                executeUserRandomizeByPatternCommand(userInput);
             }
         }
         scanner.close();
@@ -94,7 +99,7 @@ public class Application {
     }
 
     private void addTextToDocumentLibrary(TextExtractor textExtractor) {
-        this.documentLibrary.addText(textExtractor.getDocumentAsString());
+        this.documentLibrary.add(textExtractor.getDocumentAsString());
     }
 
     private void executeUserSpecifyOutputFilePathCommand(String userFilePathInput) {
@@ -108,11 +113,11 @@ public class Application {
     }
 
     private boolean isFilePathFileFormatValid(String filePath) {
-        return filePath.endsWith(".txt");
+        return filePath.endsWith(".docx");
     }
 
     private void executeUserRandomizeBySentenceCommand() {
-        List<String> combinations = getCombinations();
+        List<String> combinations = getSentenceCombinations();
         XWPFDocument document = getDocument(combinations);
 
         try {
@@ -123,7 +128,7 @@ public class Application {
         }
     }
 
-    private List<String> getCombinations() {
+    private List<String> getSentenceCombinations() {
         this.sentenceRandomizer.setListOfSentenceArrays(this.documentLibrary);
         return sentenceRandomizer.generateCombinations();
     }
@@ -138,7 +143,43 @@ public class Application {
         combinationWriter.writeCombinationsToFile();
     }
 
-    private void executeUserRandomizeByPatternCommand() {
-        display(Message.getUserRandomizeByPatternCommandMenu());
+    private void executeUserRandomizeByPatternCommand(String userPOSPatternInput) {
+        List<String> combinations = getPatternCombinations(userPOSPatternInput);
+        XWPFDocument document = getDocument(combinations);
+
+        try {
+            writeCombinationsToFile(document);
+            display(Message.getUserRandomizeByPatternCommandSuccess());
+        } catch (CombinationWriterIOException e) {
+            display(Message.getUserRandomizeByPatternCommandError());
+        }
+    }
+
+    private List<String> getPatternCombinations(String pattern) {
+        String[] tagClasses = getTagClasses(pattern);
+        patternRandomizer.setTagClasses(tagClasses);
+        Map<String, List<String>> tagsToTokens = getMapOfTokensToTags();
+        patternRandomizer.setTagsToTokens(tagsToTokens);
+        return patternRandomizer.generateCombinations();
+    }
+
+    private String[] getTagClasses(String pattern) {
+        return pattern.split("\\s+");
+    }
+
+    private Map<String, List<String>> getMapOfTokensToTags() {
+        Map<String, List<String>> tagsToTokens = new HashMap<>();
+        List<String[]> listOfDocumentsAsTokens = documentLibrary.getListOfDocumentsAsTokens();
+
+        for (String[] tokens : listOfDocumentsAsTokens) {
+            String[] tags = posTagger.getTags(tokens);
+
+            for (int i = 0; i < tags.length; i++) {
+                List<String> tokensList = tagsToTokens.getOrDefault(tags[i], new ArrayList<>());
+                tokensList.add(tokens[i]);
+                tagsToTokens.put(tags[i], tokensList);
+            }
+        }
+        return tagsToTokens;
     }
 }
