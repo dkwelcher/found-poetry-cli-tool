@@ -1,11 +1,11 @@
 package randomizer;
 
 import exception.CombinationWriterIOException;
-
-import java.io.IOException;
-import java.util.List;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 public interface DocxCombinationWriter {
+    void setDocument(XWPFDocument document);
     void setFilePath(String filePath);
+    String getFilePath();
     void writeCombinationsToFile() throws CombinationWriterIOException;
 }
