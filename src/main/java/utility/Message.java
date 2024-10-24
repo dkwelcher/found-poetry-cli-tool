@@ -1,5 +1,7 @@
 package utility;
 
+import java.util.Map;
+
 public final class Message {
     private Message() {};
 
@@ -52,5 +54,39 @@ public final class Message {
 
     public static String getUserRandomizeBySentenceCommandError() {
         return "Sentence randomization unsuccessful. Please check specified output file path.";
+    }
+
+    /*
+     * USER_RANDOMIZE_BY_PATTERN_COMMAND MESSAGES
+     */
+
+    public static String getUserRandomizeByPatternCommandMenu() {
+        Map<String, String> classToTagsMap = POSTags.getPOSTagsMap();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Part of Speech Tags:\n");
+
+        final int spaceCount = 3;
+        int count = 0;
+        for (Map.Entry<String, String> entry : classToTagsMap.entrySet()) {
+            count++;
+            stringBuilder.append(entry.getKey());
+            stringBuilder.append(": ");
+            stringBuilder.append(entry.getValue());
+            stringBuilder.append(" ".repeat(spaceCount));
+
+            if (count == 5) {
+                stringBuilder.append("\n");
+                count = 0;
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String getUserRandomizeByPatternCommandSuccess() {
+        return "Pattern randomization successful.";
+    }
+
+    public static String getUserRandomizeByPatternCommandError() {
+        return "Pattern randomization unsuccessful. Please check specified output file path.";
     }
 }
