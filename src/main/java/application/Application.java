@@ -5,7 +5,9 @@ import extractor.TextExtractor;
 import extractor.TextExtractorManager;
 import extractor.TextExtractorResult;
 import library.DocumentLibrary;
-import randomizer.CombinationWriter;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import randomizer.DocxCombinationWriter;
+import randomizer.DocxDocumentCreator;
 import randomizer.SentenceRandomizer;
 import tagger.PosTagger;
 import utility.Message;
@@ -22,16 +24,19 @@ public class Application {
     private final PosTagger posTagger;
     private final DocumentLibrary documentLibrary;
     private final SentenceRandomizer sentenceRandomizer;
-    private final CombinationWriter combinationWriter;
+    private final DocxDocumentCreator documentCreator;
+    private final DocxCombinationWriter combinationWriter;
 
     public Application(PosTagger posTagger,
                        DocumentLibrary documentLibrary,
                        SentenceRandomizer sentenceRandomizer,
-                       CombinationWriter combinationWriter) {
+                       DocxDocumentCreator documentCreator,
+                       DocxCombinationWriter combinationWriter) {
 
         this.posTagger = posTagger;
         this.documentLibrary = documentLibrary;
         this.sentenceRandomizer = sentenceRandomizer;
+        this.documentCreator = documentCreator;
         this.combinationWriter = combinationWriter;
     }
 
@@ -62,7 +67,7 @@ public class Application {
             }
 
             if (userInput.equals(USER_RANDOMIZE_BY_PATTERN_COMMAND)) {
-                System.out.println("Not implemented");
+                executeUserRandomizeByPatternCommand();
             }
         }
         scanner.close();
@@ -108,9 +113,10 @@ public class Application {
 
     private void executeUserRandomizeBySentenceCommand() {
         List<String> combinations = getCombinations();
+        XWPFDocument document = getDocument(combinations);
 
         try {
-            writeCombinationsToFile(combinations);
+            writeCombinationsToFile(document);
             display(Message.getUserRandomizeBySentenceCommandSuccess());
         } catch (CombinationWriterIOException e) {
             display(Message.getUserRandomizeBySentenceCommandError());
@@ -122,8 +128,17 @@ public class Application {
         return sentenceRandomizer.generateCombinations();
     }
 
-    private void writeCombinationsToFile(List<String> combinations) throws CombinationWriterIOException {
-        this.combinationWriter.setCombinations(combinations);
+    private XWPFDocument getDocument(List<String> combinations) {
+        documentCreator.setCombinations(combinations);
+        return documentCreator.create();
+    }
+
+    private void writeCombinationsToFile(XWPFDocument document) throws CombinationWriterIOException {
+        combinationWriter.setDocument(document);
         combinationWriter.writeCombinationsToFile();
+    }
+
+    private void executeUserRandomizeByPatternCommand() {
+        display(Message.getUserRandomizeByPatternCommandMenu());
     }
 }
