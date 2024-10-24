@@ -1,9 +1,11 @@
 import application.Application;
 import library.DocumentLibrary;
 import library.impl.DocumentLibraryImpl;
-import randomizer.CombinationWriter;
+import randomizer.DocxCombinationWriter;
+import randomizer.DocxDocumentCreator;
 import randomizer.SentenceRandomizer;
-import randomizer.impl.CombinationWriterImpl;
+import randomizer.impl.DocxCombinationWriterImpl;
+import randomizer.impl.DocxDocumentCreatorImpl;
 import randomizer.impl.SentenceRandomizerImpl;
 import tagger.PosTaggerManager;
 import tagger.PosTaggerResult;
@@ -21,8 +23,9 @@ public class FoundPoetryCLIToolApplication {
 
         DocumentLibrary documentLibrary = new DocumentLibraryImpl();
         SentenceRandomizer sentenceRandomizer = new SentenceRandomizerImpl();
-        CombinationWriter combinationWriter = new CombinationWriterImpl();
+        DocxDocumentCreator documentCreator = new DocxDocumentCreatorImpl();
+        DocxCombinationWriter combinationWriter = new DocxCombinationWriterImpl();
 
-        new Application(posTaggerResult.posTagger(), documentLibrary, sentenceRandomizer, combinationWriter).run();
+        new Application(posTaggerResult.posTagger(), documentLibrary, sentenceRandomizer, documentCreator, combinationWriter).run();
     }
 }
