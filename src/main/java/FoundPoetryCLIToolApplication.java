@@ -1,4 +1,5 @@
 import application.Application;
+import config.ModelFilePathConfig;
 import model.library.DocumentLibrary;
 import model.library.impl.DocumentLibraryImpl;
 import model.randomizer.DocxCombinationWriter;
@@ -13,7 +14,7 @@ import model.tagger.PosTaggerManager;
 import model.tagger.PosTaggerResult;
 
 public class FoundPoetryCLIToolApplication {
-    private static final String MODEL_FILE_PATH = "..\\found-poetry-cli-tool\\src\\main\\resources\\en-pos-maxent.bin";
+    private static final String MODEL_FILE_PATH = ModelFilePathConfig.getProperty("MODEL_FILE_PATH");
 
     public static void main(String[] args) {
         PosTaggerResult posTaggerResult = new PosTaggerManager(MODEL_FILE_PATH).getResult();
