@@ -1,12 +1,33 @@
 package utility;
 
+import exception.PosTaggerIOException;
+
 import java.util.Map;
 
 public final class Message {
     private Message() {};
 
+    /**
+     * Messages related to PosTagger instantiation failure
+     */
     public static String systemShutdownMessage() {
         return "The system will shut down";
+    }
+
+    public static String taggerNullOrEmptyFilePathExceptionMessage() {
+        return "PosTagger model file path is null or empty";
+    }
+
+    public static String taggerIncorrectFileFormatExceptionMessage() {
+        return "PosTagger model file path is an incorrect file format. Expected .bin";
+    }
+
+    public static String taggerNonExistentFileException() {
+        return "PosTagger model file does not exist";
+    }
+
+    public static String PosTaggerIOExceptionMessage(String filePath, PosTaggerIOException e) {
+        return "Failed to load PosTagger at: " + filePath + e.getMessage();
     }
 
     public static String welcomeMessage() {
