@@ -5,6 +5,10 @@ import java.util.Map;
 public final class Message {
     private Message() {};
 
+    public static String systemShutdownMessage() {
+        return "The system will shut down";
+    }
+
     public static String welcomeMessage() {
         return "The Found Poetry CLI Tool extracts text from .docx and .doc files and provides options to randomize text by sentences or parts-of-speech patterns";
     }
