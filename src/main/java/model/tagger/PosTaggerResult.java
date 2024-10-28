@@ -1,4 +1,4 @@
-package tagger;
+package model.tagger;
 
 public record PosTaggerResult(PosTagger posTagger, String errorMessage) {
 

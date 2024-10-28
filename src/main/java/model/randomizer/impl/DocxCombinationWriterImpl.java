@@ -1,14 +1,12 @@
-package randomizer.impl;
+package model.randomizer.impl;
 
 import exception.CombinationWriterIOException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import randomizer.DocxCombinationWriter;
+import model.randomizer.DocxCombinationWriter;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 public class DocxCombinationWriterImpl implements DocxCombinationWriter {
     private static final String DEFAULT_OUTPUT_FILE_PATH = "Associations.docx";

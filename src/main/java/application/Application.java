@@ -1,16 +1,16 @@
 package application;
 
 import exception.CombinationWriterIOException;
-import extractor.TextExtractor;
-import extractor.TextExtractorManager;
-import extractor.TextExtractorResult;
-import library.DocumentLibrary;
+import model.extractor.TextExtractor;
+import model.extractor.TextExtractorManager;
+import model.extractor.TextExtractorResult;
+import model.library.DocumentLibrary;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import randomizer.DocxCombinationWriter;
-import randomizer.DocxDocumentCreator;
-import randomizer.PatternRandomizer;
-import randomizer.SentenceRandomizer;
-import tagger.PosTagger;
+import model.randomizer.DocxCombinationWriter;
+import model.randomizer.DocxDocumentCreator;
+import model.randomizer.PatternRandomizer;
+import model.randomizer.SentenceRandomizer;
+import model.tagger.PosTagger;
 import utility.Message;
 
 import java.util.*;

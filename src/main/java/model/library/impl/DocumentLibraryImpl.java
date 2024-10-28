@@ -1,6 +1,6 @@
-package library.impl;
+package model.library.impl;
 
-import library.DocumentLibrary;
+import model.library.DocumentLibrary;
 
 import java.util.ArrayList;
 import java.util.List;

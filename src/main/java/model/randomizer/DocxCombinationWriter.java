@@ -1,4 +1,4 @@
-package randomizer;
+package model.randomizer;
 
 import exception.CombinationWriterIOException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;

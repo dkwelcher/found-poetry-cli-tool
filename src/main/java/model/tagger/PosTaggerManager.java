@@ -1,9 +1,9 @@
-package tagger;
+package model.tagger;
 
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
 import exception.PosTaggerIOException;
-import tagger.impl.PosTaggerImpl;
+import model.tagger.impl.PosTaggerImpl;
 
 public class PosTaggerManager {
     private final String filePath;

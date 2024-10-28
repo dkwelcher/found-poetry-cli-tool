@@ -1,4 +1,4 @@
-package randomizer;
+package model.randomizer;
 
 import java.util.List;
 import java.util.Map;

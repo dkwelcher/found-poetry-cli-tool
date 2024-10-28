@@ -1,16 +1,16 @@
 import application.Application;
-import library.DocumentLibrary;
-import library.impl.DocumentLibraryImpl;
-import randomizer.DocxCombinationWriter;
-import randomizer.DocxDocumentCreator;
-import randomizer.PatternRandomizer;
-import randomizer.SentenceRandomizer;
-import randomizer.impl.DocxCombinationWriterImpl;
-import randomizer.impl.DocxDocumentCreatorImpl;
-import randomizer.impl.PatternRandomizerImpl;
-import randomizer.impl.SentenceRandomizerImpl;
-import tagger.PosTaggerManager;
-import tagger.PosTaggerResult;
+import model.library.DocumentLibrary;
+import model.library.impl.DocumentLibraryImpl;
+import model.randomizer.DocxCombinationWriter;
+import model.randomizer.DocxDocumentCreator;
+import model.randomizer.PatternRandomizer;
+import model.randomizer.SentenceRandomizer;
+import model.randomizer.impl.DocxCombinationWriterImpl;
+import model.randomizer.impl.DocxDocumentCreatorImpl;
+import model.randomizer.impl.PatternRandomizerImpl;
+import model.randomizer.impl.SentenceRandomizerImpl;
+import model.tagger.PosTaggerManager;
+import model.tagger.PosTaggerResult;
 
 public class FoundPoetryCLIToolApplication {
     private static final String MODEL_FILE_PATH = "..\\found-poetry-cli-tool\\src\\main\\resources\\en-pos-maxent.bin";

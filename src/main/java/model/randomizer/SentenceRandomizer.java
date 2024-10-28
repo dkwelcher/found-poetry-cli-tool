@@ -1,6 +1,6 @@
-package randomizer;
+package model.randomizer;
 
-import library.DocumentLibrary;
+import model.library.DocumentLibrary;
 
 import java.util.List;
 

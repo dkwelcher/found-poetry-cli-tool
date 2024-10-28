@@ -1,4 +1,4 @@
-package tagger.impl;
+package model.tagger.impl;
 
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
@@ -6,7 +6,7 @@ import exception.NullOrEmptyFilePathException;
 import exception.PosTaggerIOException;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
-import tagger.PosTagger;
+import model.tagger.PosTagger;
 
 import java.io.FileInputStream;
 import java.io.IOException;

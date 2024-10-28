@@ -1,6 +1,6 @@
-package randomizer.impl;
+package model.randomizer.impl;
 
-import randomizer.PatternRandomizer;
+import model.randomizer.PatternRandomizer;
 
 import java.util.ArrayList;
 import java.util.Collections;

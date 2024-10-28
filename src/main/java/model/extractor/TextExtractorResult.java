@@ -1,4 +1,4 @@
-package extractor;
+package model.extractor;
 
 public record TextExtractorResult(TextExtractor textExtractor, String errorMessage) {
 

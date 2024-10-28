@@ -1,9 +1,9 @@
-package randomizer.impl;
+package model.randomizer.impl;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import randomizer.DocxDocumentCreator;
+import model.randomizer.DocxDocumentCreator;
 
 import java.util.List;
 

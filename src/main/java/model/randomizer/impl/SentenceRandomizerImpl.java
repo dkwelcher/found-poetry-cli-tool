@@ -1,7 +1,7 @@
-package randomizer.impl;
+package model.randomizer.impl;
 
-import library.DocumentLibrary;
-import randomizer.SentenceRandomizer;
+import model.library.DocumentLibrary;
+import model.randomizer.SentenceRandomizer;
 
 import java.util.*;
 

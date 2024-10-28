@@ -1,4 +1,4 @@
-package randomizer;
+package model.randomizer;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 

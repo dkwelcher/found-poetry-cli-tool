@@ -1,10 +1,10 @@
-package extractor;
+package model.extractor;
 
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
 import exception.TextExtractorIOException;
-import extractor.impl.DocTextExtractor;
-import extractor.impl.DocxTextExtractor;
+import model.extractor.impl.DocTextExtractor;
+import model.extractor.impl.DocxTextExtractor;
 
 public class TextExtractorManager {
     private static final String[] EXPECTED_FORMATS = { ".docx", ".doc" };

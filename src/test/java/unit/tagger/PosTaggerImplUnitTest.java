@@ -1,6 +1,6 @@
 package unit.tagger;
 
-import tagger.impl.PosTaggerImpl;
+import model.tagger.impl.PosTaggerImpl;
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
 import exception.NullOrEmptyFilePathException;

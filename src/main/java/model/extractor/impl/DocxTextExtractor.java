@@ -1,9 +1,9 @@
-package extractor.impl;
+package model.extractor.impl;
 
 import exception.IncorrectFileFormatException;
 import exception.NonExistentFileException;
 import exception.TextExtractorIOException;
-import extractor.TextExtractor;
+import model.extractor.TextExtractor;
 import org.apache.poi.extractor.POITextExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
