@@ -25,21 +25,25 @@ public class FoundPoetryCLIToolApplication {
     private static final String MODEL_FILE_PATH = ModelFilePathConfig.getProperty("MODEL_FILE_PATH");
 
     public static void main(String[] args) {
-        PosTagger posTagger = null;
+        PosTagger posTagger;
         try {
             posTagger = initPosTagger();
         } catch (NullOrEmptyFilePathException e) {
             System.out.println(Message.systemShutdownMessage());
-            System.err.println("PosTagger model file path is null or empty");
+            System.err.println(Message.taggerNullOrEmptyFilePathExceptionMessage());
+            return;
         } catch (IncorrectFileFormatException e) {
             System.out.println(Message.systemShutdownMessage());
-            System.err.println("PosTagger model file path is an incorrect file format. Expected .bin");
+            System.err.println(Message.taggerIncorrectFileFormatExceptionMessage());
+            return;
         } catch (NonExistentFileException e) {
             System.out.println(Message.systemShutdownMessage());
-            System.err.println("PosTagger model file does not exist");
+            System.err.println(Message.taggerNonExistentFileException());
+            return;
         } catch (PosTaggerIOException e) {
             System.out.println(Message.systemShutdownMessage());
-            System.err.println("Failed to load PosTagger at: " + MODEL_FILE_PATH + e.getMessage());
+            System.err.println(Message.PosTaggerIOExceptionMessage(MODEL_FILE_PATH, e));
+            return;
         }
 
         DocumentLibrary documentLibrary = new DocumentLibraryImpl();
