@@ -17,6 +17,7 @@ import utility.Message;
 import java.util.*;
 
 public class Application {
+    private static final String EXPECTED_FORMAT = ".docx";
     private final PosTagger posTagger;
     private final DocumentLibrary documentLibrary;
     private final SentenceRandomizer sentenceRandomizer;
@@ -109,7 +110,7 @@ public class Application {
     }
 
     private boolean isFilePathFileFormatValid(String filePath) {
-        return filePath.endsWith(".docx");
+        return filePath.endsWith(EXPECTED_FORMAT);
     }
 
     private void executeUserRandomizeBySentenceCommand() {
