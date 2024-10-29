@@ -11,16 +11,12 @@ import model.randomizer.DocxDocumentCreator;
 import model.randomizer.PatternRandomizer;
 import model.randomizer.SentenceRandomizer;
 import model.tagger.PosTagger;
+import utility.Command;
 import utility.Message;
 
 import java.util.*;
 
 public class Application {
-    private static final String USER_SUBMIT_DOCUMENT_COMMAND = "1";
-    private static final String USER_SPECIFY_OUTPUT_FILE_PATH_COMMAND = "2";
-    private static final String USER_RANDOMIZE_BY_SENTENCE_COMMAND = "3";
-    private static final String USER_RANDOMIZE_BY_PATTERN_COMMAND = "4";
-    private static final String USER_EXIT_COMMAND = "5";
     private final PosTagger posTagger;
     private final DocumentLibrary documentLibrary;
     private final SentenceRandomizer sentenceRandomizer;
@@ -49,27 +45,27 @@ public class Application {
 
         String userInput = "";
 
-        while (!userInput.equalsIgnoreCase(USER_EXIT_COMMAND)) {
+        while (!userInput.equalsIgnoreCase(Command.USER_EXIT_COMMAND)) {
             display(Message.menu());
             userInput = scanner.nextLine().trim();
 
-            if (userInput.equals(USER_SUBMIT_DOCUMENT_COMMAND)) {
+            if (userInput.equals(Command.USER_SUBMIT_DOCUMENT_COMMAND)) {
                 display(Message.getUserSubmitDocumentCommandPrompt());
                 userInput = scanner.nextLine().trim();
                 executeUserSubmitDocumentCommand(userInput);
             }
 
-            if (userInput.equals(USER_SPECIFY_OUTPUT_FILE_PATH_COMMAND)) {
+            if (userInput.equals(Command.USER_SPECIFY_OUTPUT_FILE_PATH_COMMAND)) {
                 display(Message.getUserSpecifyOutputFilePathCommandPrompt());
                 userInput = scanner.nextLine().trim();
                 executeUserSpecifyOutputFilePathCommand(userInput);
             }
 
-            if (userInput.equals(USER_RANDOMIZE_BY_SENTENCE_COMMAND)) {
+            if (userInput.equals(Command.USER_RANDOMIZE_BY_SENTENCE_COMMAND)) {
                 executeUserRandomizeBySentenceCommand();
             }
 
-            if (userInput.equals(USER_RANDOMIZE_BY_PATTERN_COMMAND)) {
+            if (userInput.equals(Command.USER_RANDOMIZE_BY_PATTERN_COMMAND)) {
                 display(Message.getUserRandomizeByPatternCommandMenu());
                 userInput = scanner.nextLine().trim();
                 executeUserRandomizeByPatternCommand(userInput);
