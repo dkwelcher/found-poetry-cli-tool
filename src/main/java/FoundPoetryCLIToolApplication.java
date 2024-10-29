@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 
 public class FoundPoetryCLIToolApplication {
     private static final String MODEL_FILE_PATH = ModelFilePathConfig.getProperty("MODEL_FILE_PATH");
+    private static final String EXPECTED_FORMAT = ".bin";
 
     public static void main(String[] args) {
         PosTagger posTagger;
@@ -65,9 +66,8 @@ public class FoundPoetryCLIToolApplication {
             throw new NullOrEmptyFilePathException((MODEL_FILE_PATH));
         }
 
-        final String expectedFormat = ".bin";
-        if (!MODEL_FILE_PATH.endsWith(expectedFormat)) {
-            throw new IncorrectFileFormatException(MODEL_FILE_PATH, expectedFormat);
+        if (!MODEL_FILE_PATH.endsWith(EXPECTED_FORMAT)) {
+            throw new IncorrectFileFormatException(MODEL_FILE_PATH, EXPECTED_FORMAT);
         }
 
         if (!Files.exists(Paths.get(MODEL_FILE_PATH))) {
