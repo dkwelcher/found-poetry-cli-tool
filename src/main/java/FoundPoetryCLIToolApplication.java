@@ -29,20 +29,16 @@ public class FoundPoetryCLIToolApplication {
         try {
             posTagger = initPosTagger();
         } catch (NullOrEmptyFilePathException e) {
-            System.out.println(Message.systemShutdownMessage());
-            System.err.println(Message.taggerNullOrEmptyFilePathExceptionMessage());
+            displayErrorMessage(Message.taggerNullOrEmptyFilePathExceptionMessage());
             return;
         } catch (IncorrectFileFormatException e) {
-            System.out.println(Message.systemShutdownMessage());
-            System.err.println(Message.taggerIncorrectFileFormatExceptionMessage());
+            displayErrorMessage(Message.taggerIncorrectFileFormatExceptionMessage());
             return;
         } catch (NonExistentFileException e) {
-            System.out.println(Message.systemShutdownMessage());
-            System.err.println(Message.taggerNonExistentFileException());
+            displayErrorMessage(Message.taggerNonExistentFileException());
             return;
         } catch (PosTaggerIOException e) {
-            System.out.println(Message.systemShutdownMessage());
-            System.err.println(Message.PosTaggerIOExceptionMessage(MODEL_FILE_PATH, e));
+            displayErrorMessage(Message.PosTaggerIOExceptionMessage(MODEL_FILE_PATH, e));
             return;
         }
 
@@ -53,6 +49,11 @@ public class FoundPoetryCLIToolApplication {
         DocxCombinationWriter combinationWriter = new DocxCombinationWriterImpl();
 
         new Application(posTagger, documentLibrary, sentenceRandomizer, patternRandomizer, documentCreator, combinationWriter).run();
+    }
+
+    private static void displayErrorMessage(String errorMessage) {
+        System.out.println(Message.systemShutdownMessage());
+        System.err.println(errorMessage);
     }
 
     private static PosTagger initPosTagger() throws NullOrEmptyFilePathException,
