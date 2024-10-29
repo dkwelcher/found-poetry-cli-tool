@@ -5,7 +5,7 @@ import exception.PosTaggerIOException;
 import java.util.Map;
 
 public final class Message {
-    private Message() {};
+    private Message() {}
 
     /**
      * Messages related to PosTagger instantiation failure
